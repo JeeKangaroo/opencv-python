@@ -155,7 +155,7 @@ def main():
             "-DBUILD_TESTS=OFF",
             "-DBUILD_PERF_TESTS=OFF",
             "-DBUILD_DOCS=OFF",
-            "-DCMAKE_INSTALL_PREFIX=/io"
+            "-DCMAKE_INSTALL_PREFIX=./"
         ]
         + (
             ["-DOPENCV_EXTRA_MODULES_PATH=" + os.path.abspath("opencv_contrib/modules")]
