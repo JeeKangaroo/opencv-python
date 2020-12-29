@@ -2,6 +2,7 @@ import sys
 import os
 import subprocess
 
+
 if __name__ == "__main__":
     contrib = sys.argv[1]
     headless = sys.argv[2]
@@ -27,6 +28,8 @@ if __name__ == "__main__":
                 opencv_version += words[2]
                 break
 
+    wd = os.getcwd()
+    os.chdir("./opencv")
     # used in local dev releases
     git_hash = (
         subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
@@ -61,6 +64,7 @@ if __name__ == "__main__":
         version = git_hash
         opencv_version += "+{}".format(version)
 
+    os.chdir(wd)
     with open("cv2/version.py", "w") as f:
         f.write('opencv_version = "{}"\n'.format(opencv_version))
         f.write("contrib = {}\n".format(contrib))
