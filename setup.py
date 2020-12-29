@@ -136,6 +136,16 @@ def main():
             # Relative dir to install the built module to in the build tree.
             # The default is generated from sysconfig, we'd rather have a constant for simplicity
             "-DOPENCV_PYTHON3_INSTALL_PATH=python",
+            "-DBUILD_TIFF=ON",
+            "-DWITH_CUDA=OFF",
+            "-DWITH_OPENGL=OFF",
+            "-DWITH_OPENCL=OFF",
+            "-DWITH_IPP=ON",
+            "-DWITH_TBB=ON",
+            "-DWITH_EIGEN=ON",
+            "-DWITH_LAPACK=ON",
+            "-DWITH_V4L=OFF",
+            "-DCMAKE_CXX_FLAGS=-std=c++11",
             # Otherwise, opencv scripts would want to install `.pyd' right into site-packages,
             # and skbuild bails out on seeing that
             "-DINSTALL_CREATE_DISTRIB=ON",
@@ -145,6 +155,7 @@ def main():
             "-DBUILD_TESTS=OFF",
             "-DBUILD_PERF_TESTS=OFF",
             "-DBUILD_DOCS=OFF",
+            "-DCMAKE_INSTALL_PREFIX=/io"
         ]
         + (
             ["-DOPENCV_EXTRA_MODULES_PATH=" + os.path.abspath("opencv_contrib/modules")]
@@ -198,8 +209,8 @@ def main():
                 ]
 
         if sys.platform.startswith("linux"):
-            cmake_args.append("-DWITH_V4L=ON")
-            cmake_args.append("-DWITH_LAPACK=ON")
+            # cmake_args.append("-DWITH_V4L=ON")
+            # cmake_args.append("-DWITH_LAPACK=ON")
             cmake_args.append("-DENABLE_PRECOMPILED_HEADERS=OFF")
 
     # https://github.com/scikit-build/scikit-build/issues/479
@@ -417,11 +428,11 @@ def get_and_set_info(contrib, headless, ci_build):
 
     # generate a fresh version.py always when Git repository exists
     # (in sdists the version.py file already exists)
-    if os.path.exists(".git"):
-        old_args = sys.argv.copy()
-        sys.argv = ["", str(contrib), str(headless), str(ci_build)]
-        runpy.run_path("find_version.py", run_name="__main__")
-        sys.argv = old_args
+    # if os.path.exists(".git"):
+    old_args = sys.argv.copy()
+    sys.argv = ["", str(contrib), str(headless), str(ci_build)]
+    runpy.run_path("find_version.py", run_name="__main__")
+    sys.argv = old_args
 
     with open(version_file) as fp:
         exec(fp.read(), version)
